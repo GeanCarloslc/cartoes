@@ -7,12 +7,14 @@ import io.github.geancarloslc.cartoes.domain.entity.CartaoCliente;
 import io.github.geancarloslc.cartoes.infra.dto.DadosSolicitacaoEmissaoCartaoDTO;
 import io.github.geancarloslc.cartoes.infra.repository.CartaoClienteRepository;
 import io.github.geancarloslc.cartoes.infra.repository.CartaoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class EmissaoCartaoSubscriber {
 
     @Autowired
@@ -36,7 +38,7 @@ public class EmissaoCartaoSubscriber {
 
             clienteRepository.save(cartaoCliente);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Erro ao receber solicitacao de emissao de cartao: {}", e.getMessage());
         }
     }
 }
